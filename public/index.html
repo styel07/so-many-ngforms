@@ -6,12 +6,44 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
   </head>
   <body ng-controller="myController as vm">
-    <form class="" action="index.html" method="post">
-      <input type="number" ng-model="number" placeholder="">
-      <input type="text" ng-model="text" placeholder="">
-      <input type="checkbox" ng-model="agreement" placeholder="gender">
-      <input type="button" ng-model="submit" value="Submit">
-    </form>
+    <div>
+      <form name="myForm" ng-submit="submit()" novalidate>
+        <select ng-model="data.country"
+                ng-options="country.name for country in vm.countries track by country.code">
+        </select>
+        <input type="number" ng-model="data.number" placeholder="Enter Number">
+        <input type="text"
+               name="name"
+               ng-model="data.name"
+               placeholder="Enter a name"
+               required
+               ng-minlength="2"
+               ng-pattern="/^a/">
+        <input type="checkbox" ng-model="data.agreement">
+        <input type="submit" value="Submit">
+      </form>
+    </div>
+    <div class="">
+      <h1>Results</h1>
+      <p>Number: {{data.number}}</p>
+      <p>Name: {{data.name}}</p>
+      <p>Agreement: {{data.agreement}}</p>
+      <p>Country: {{data.country.name}}</p>
+    </div>
+    <div class="">
+      <pre>{{ myForm.name.$error | json }}</pre>
+    </div>
+    <div class="">
+      <span class="error" ng-if="myForm.$submitted && myForm.name.$error.required">
+        A name is required!
+      </span>
+      <span class="error" ng-if="myForm.$submitted && myForm.name.$error.minlength">
+        Min length should be 2
+      </span>
+      <span class="error" ng-if="myForm.$submitted && myForm.name.$error.pattern">
+        This name must start with the "a" characer!
+      </span>
+    </div>
     <script type="text/javascript" src="js/script.js"></script>
   </body>
 </html>
